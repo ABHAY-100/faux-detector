@@ -5,3 +5,4 @@ document.getElementById('onButton').addEventListener('click', () => {
 document.getElementById('offButton').addEventListener('click', () => {
     chrome.runtime.sendMessage({ action: 'deactivate' });
 });
+
