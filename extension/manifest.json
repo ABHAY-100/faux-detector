@@ -3,11 +3,18 @@
     "name": "My Next.js Chrome Extension",
     "version": "1.0",
     "action": {
-        "default_popup": "popup/index.html"
+        "default_popup": "popup/index.html",
+        "default_icon": "icon.png"
         
     },
     "background": {
         "service_worker": "background.js"
     },
-    "permissions": ["storage"]
+    "permissions": ["storage"],
+    "content_scripts": [
+        {
+            "matches": ["<all urls>"],  
+            "js": ["content.js"]
+        }
+    ]
 }
