@@ -1,3 +1,9 @@
+// Add DM Sans font import to the document head
+const fontLink = document.createElement('link');
+fontLink.href = 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap';
+fontLink.rel = 'stylesheet';
+document.head.appendChild(fontLink);
+
 // Main function to find images and add detection buttons
 function findImagesAndAddButtons() {
     const images = document.querySelectorAll('img');
@@ -29,30 +35,31 @@ function addDetectButton(image) {
     const button = document.createElement('button');
     button.innerText = 'Detect Deepfake';
     
-    // Style the button with 50% transparency
+    // Style the button with DM Sans
     Object.assign(button.style, {
         position: 'absolute',
         zIndex: '1000',
-        backgroundColor: 'rgba(255, 0, 0, 1)', // 50% transparent red
-        opacity : 0.2,
+        backgroundColor: 'rgb(22, 24, 28)',
         color: 'white',
         border: 'none',
-        padding: '5px 10px',
+        padding: '8px 16px',
         cursor: 'pointer',
-        borderRadius: '4px',
-        fontSize: '12px',
-        fontWeight: 'bold',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-        transition: 'all 0.3s ease' // Smooth transition for hover effect
+        borderRadius: '16px',
+        fontSize: '14px',
+        fontWeight: '500',
+        fontFamily: '"DM Sans", sans-serif', // Updated to DM Sans
+        //boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+        transition: 'all 0.3s ease',
+        opacity: '0.1',
+        border : 'solid 1px grey'
     });
 
-    // Add hover effect
     button.addEventListener('mouseenter', () => {
-        button.style.opacity = 1; // Fully opaque on hover
+        button.style.opacity = '1';
     });
 
     button.addEventListener('mouseleave', () => {
-        button.style.backgroundColor = 'rgba(255, 0, 0, 0.5)'; // Back to 50% transparent
+        button.style.opacity = '0.1';
     });
 
     const updateButtonPosition = () => {
