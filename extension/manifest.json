@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "My Next.js Chrome Extension",
+    "name": "Faux DeepFake Detector",
     "version": "1.0",
     "action": {
         "default_popup": "popup/index.html",
@@ -13,7 +13,7 @@
     "permissions": ["storage"],
     "content_scripts": [
         {
-            "matches": ["<all urls>"],  
+            "matches": ["<all_urls>"],  
             "js": ["content.js"]
         }
     ]
