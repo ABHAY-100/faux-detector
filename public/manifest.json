@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "My Chrome Extension",
+    "name": "deepfake-detection",
     "version": "1.0",
-    "description": "A Chrome extension built with Next.js",
+    "description": "This extension detects deepfake images and videos.",
     "permissions": [
         "storage",
         "activeTab",
