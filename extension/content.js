@@ -75,36 +75,66 @@ function addDetectButton(image) {
         console.log('Detecting deepfake for:', image.src);
     
         try {
-            // Convert the image URL to a File (Blob)
-            console.log("in try catch");
-            const imageBlob = await fetch(image.src).then((res) => res.blob());
-            const imageFile = new File([imageBlob], 'image.png', { type: 'image/png' }); // Adjust to desired format
-    
-            // Create a FormData object
+            // Fetch the image URL as a Blob
+            console.log("in try catch")
+            const imageBlob = await fetch(image.src).then((res) => {
+                if (!res.ok) {
+                    throw new Error(`Failed to fetch image: ${res.statusText}`);
+                }
+                return res.blob();
+            });
+            console.log("converting blob to file")
+            // Convert the Blob to a File
+            const imageFile = new File([imageBlob], 'image.png', { type: 'image/png' });
+
+            console.log("creating formdata")
+            // Create FormData and append the file
             const formData = new FormData();
             formData.append('image', imageFile);
             formData.append('metadata', JSON.stringify({
                 width: image.naturalWidth,
                 height: image.naturalHeight,
             }));
-    
-            // Send POST request with image file and metadata
+            
+            console.log("sending post req")
+            // Send the POST request to the server
             const response = await fetch('https://snvdv9b8-8000.inc1.devtunnels.ms/classify', {
                 method: 'POST',
                 body: formData,
             });
-    
+            
             const result = await response.json();
-            console.log("here" ,result)
+            if(!result){
+                throw new Error("Can't detect")
+            }
+            function formatFloat(value, decimalPlaces = 6) {
+                return parseFloat(value.toFixed(decimalPlaces));
+            }
+            const prediction = formatFloat(parseFloat(result.best_prediction));
+            console.log(result); // Outputs: 83%
+            chrome.runtime.sendMessage({
+                action: "updateResult",
+                data: {
+                    best_prediction: prediction,
+                    classification: result.classification                
+                }
+            });
+
+
+            console.log("output recieved:",result)
             if (response.ok) {
-                console.log('Checking ');
+                console.log('Detection result:', result);
+               //button.innerText = 'Deepfake Detected'; // Or display result in a modal, etc.
+                //button.style.backgroundColor = 'green';
+            } else {
+                throw new Error(result.message || 'Detection failed');
             }
         } catch (error) {
             console.error('Error making POST request:', error);
-            button.innerText = 'Error';
-            button.style.backgroundColor = 'grey';
+            
         }
     });
+    
     
     window.addEventListener('scroll', updateButtonPosition);
     window.addEventListener('resize', updateButtonPosition);
@@ -129,3 +159,4 @@ observer.observe(document.body, {
 
 findImagesAndAddButtons();
 setInterval(findImagesAndAddButtons, 2000);
+

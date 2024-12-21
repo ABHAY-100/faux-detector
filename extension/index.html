@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faux</title>
+    <style>
+        @font-face {
+            font-family: 'EtudeNoir';
+            src: url('../fonts/EtudeNoire.ttf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'GeneralSans';
+            src: url('../fonts/GeneralSans.otf') format('truetype');
+        }
+
+        .etude-noir-font {
+            font-family: 'EtudeNoir', sans-serif;
+        }
+
+        .general-sans-font {
+            font-family: 'GeneralSans', sans-serif;
+        }
+    </style>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 350px;
+            height: 460px;
+            background-image: url('../bg_true.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            /* background-image: url('../bg_false.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat; */
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+            /* Match this with your bg.png color */
+            border-radius: 0;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            color: white;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: transparent;
+            /* ensure container is transparent */
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 100px;
+        }
+
+        .logo {
+            width: 54px;
+            /* height: 32px; */
+            filter: brightness(0) invert(1);
+        }
+
+        .close-btn {
+            width: 32px;
+            /* height: 24px; */
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .content {
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .count {
+            font-size: 120px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: -4px;
+        }
+
+        .description {
+            font-size: 16.6px;
+            line-height: 1.4;
+            opacity: 0.82;
+            max-width: 240px;
+            margin: 0 auto;
+        }
+    </style>
+
+    <script>
+        document.querySelector('.close-btn').addEventListener('click', () => {
+            try {
+                window.close();
+            } catch (error) {
+                console.error("Popup close failed:", error);
+            }
+        });
+    </script>
+</head>
+
+<body >
+    <div class="container" id="popup-container" style="display: flex;">
+        <nav style="margin-top: 5px; display: flex; justify-content: center; align-items: center;">
+            <img src="../icon.png" alt="Logo" class="logo">
+            <!-- <img src="../close.png" alt="Close" class="close-btn"> -->
+        </nav>
+        <div class="content">
+            <h2 class="count general-sans-font" style="font-size: 72px; text-transform: uppercase;" id="output">...</h2><br>
+            <p class="description general-sans-font">with a confidence score of <br /> <p class="description general-sans-font " style="font-weight: bold;" id="score"></p></p>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
