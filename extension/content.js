@@ -31,9 +31,11 @@ function findImagesAndAddButtons() {
     });
 }
 
+
 function addDetectButton(image) {
     const button = document.createElement('button');
     button.innerText = 'Detect Deepfake';
+    button.id = 'detect-button'
     
     // Style the button with DM Sans
     Object.assign(button.style, {
@@ -68,17 +70,48 @@ function addDetectButton(image) {
         button.style.left = `${rect.left + window.scrollX + 10}px`;
     };
 
-    button.addEventListener('click', (e) => {
+    button.addEventListener('click', async (e) => {
         e.stopPropagation();
         console.log('Detecting deepfake for:', image.src);
-        // Add your deepfake detection logic here
+    
+        try {
+            // Convert the image URL to a File (Blob)
+            console.log("in try catch");
+            const imageBlob = await fetch(image.src).then((res) => res.blob());
+            const imageFile = new File([imageBlob], 'image.png', { type: 'image/png' }); // Adjust to desired format
+    
+            // Create a FormData object
+            const formData = new FormData();
+            formData.append('image', imageFile);
+            formData.append('metadata', JSON.stringify({
+                width: image.naturalWidth,
+                height: image.naturalHeight,
+            }));
+    
+            // Send POST request with image file and metadata
+            const response = await fetch('https://snvdv9b8-8000.inc1.devtunnels.ms/classify', {
+                method: 'POST',
+                body: formData,
+            });
+    
+            const result = await response.json();
+            console.log("here" ,result)
+            if (response.ok) {
+                console.log('Checking ');
+            }
+        } catch (error) {
+            console.error('Error making POST request:', error);
+            button.innerText = 'Error';
+            button.style.backgroundColor = 'grey';
+        }
     });
-
+    
     window.addEventListener('scroll', updateButtonPosition);
     window.addEventListener('resize', updateButtonPosition);
     
     updateButtonPosition();
     document.body.appendChild(button);
+    
 }
 
 const observer = new MutationObserver((mutations) => {
