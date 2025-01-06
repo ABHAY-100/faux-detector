@@ -20,9 +20,16 @@ CORS(app, resources={
 MODEL_PATH = 'cnn_model.h5'
 # https://www.dropbox.com/scl/fi/0zh88gmiw79j6wozdzhxe/cnn_model.h5?rlkey=oh0g202fnkssq0r1imlz0u4s3&st=aahgdn49&dl=0
 
+dropbox_url = "https://www.dropbox.com/scl/fi/0zh88gmiw79j6wozdzhxe/cnn_model.h5?rlkey=oh0g202fnkssq0r1imlz0u4s3&st=aahgdn49&dl=0"
+
+# Download the model
+response = requests.get(dropbox_url)
+with open("model.h5", "wb") as f:
+    f.write(response.content)
+
 # Load the trained model
 try:
-    model = load_model(MODEL_PATH)
+    model = load_model("model.h5")
     print("Model loaded successfully.")
 except Exception as e:
     raise RuntimeError(f"Error loading model: {e}")
