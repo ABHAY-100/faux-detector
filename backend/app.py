@@ -5,7 +5,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
 import os
-
+import requests
 app = Flask(__name__)
 
 CORS(app, resources={
@@ -23,7 +23,7 @@ MODEL_PATH = 'cnn_model.h5'
 dropbox_url = "https://www.dropbox.com/scl/fi/0zh88gmiw79j6wozdzhxe/cnn_model.h5?rlkey=oh0g202fnkssq0r1imlz0u4s3&st=aahgdn49&dl=0"
 
 # Download the model
-response = request.get(dropbox_url)
+response = requests.get(dropbox_url)
 with open("model.h5", "wb") as f:
     f.write(response.content)
 
