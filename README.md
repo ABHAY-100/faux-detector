@@ -136,13 +136,4 @@ Now ensure the extension is active; you will see a popup button over each image 
 <br />
 
 
-## 👥 Collaborators
-
-<a href="https://github.com/AsilMehaboob/SpaceGame/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=AsilMehaboob/SpaceGame" />
-</a>
-
-<br />
-
-
 **Thank you for your interest in Faux! 🤝**
