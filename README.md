@@ -2,7 +2,7 @@
 
 ## Overview
 
-Faux Detector is a user-friendly Chrome extension designed to address the increasing threat of deepfakes and manipulated images online. By providing real-time detection capabilities, Faux Detector empowers users to verify the authenticity of images while browsing the web. Utilizing advanced AI technology, it makes navigating the digital landscape safer and more trustworthy, ensuring that users can make informed decisions about the content they encounter.
+Faux Detector is a user-friendly Chrome Extension designed to address the increasing threat of deepfakes and manipulated images online. By providing real-time detection capabilities, Faux Detector empowers users to verify the authenticity of images while browsing the web. Utilizing advanced AI technology, it makes navigating the digital landscape safer and more trustworthy, ensuring that users can make informed decisions about the content they encounter.
 
 <br />
 
