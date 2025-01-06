@@ -23,7 +23,13 @@ Deepfakes present a significant challenge in our digital lives, as they can impe
 <br />
 
 
-## 🔧 How to Set It Up 
+## Built With
+
+![Tech Stack](https://skillicons.dev/icons?i=html,css,js,flask,tensorflow,opencv)
+
+<br />
+
+## How to Set It Up 
 
 ### Prerequisites
 
@@ -101,9 +107,9 @@ Ensure you have the following installed:
     Open your `manifest.json` file and update the `host_permissions` to include your Ngrok URL:
 
       ```bash
-        "host_permissions": [
-              "https://<your-ngrok-subdomain>.ngrok-free.app/*"
-          ]
+      "host_permissions": [
+        "https://<your-ngrok-subdomain>.ngrok-free.app/*"
+      ]
       ```
     *Make sure to replace `<your-ngrok-subdomain>` with the actual subdomain provided by Ngrok when you start it.*
 
@@ -132,9 +138,27 @@ Ensure you have the following installed:
     - Click on the **Load unpacked** button.
     - Select the folder containing your extension files.
 
-#### Final Steps
+### Final Steps
 
 Now ensure the extension is active; you will see a popup button over each image on your current website. Just click on the "Detect Deepfake" button, and you can see the results!
+
+<br />
+
+
+## Team Members
+
+1. [Abhay Balakrishnan](https://github.com/ABHAY-100)
+2. [Aadithya Madhav](https://github.com/aadithyayy)
+3. [Asil Mehaboob](https://github.com/AsilMehaboob)
+4. [Sreyas B Anand](https://github.com/sreyas-b-anand)
+
+<br />
+
+
+## Contribution
+
+At this time, we are not accepting external contributions. We appreciate your interest in Faux Detector! Please feel free to use the project, provide feedback, and report any issues you encounter.
+
 
 <br />
 
