@@ -132,7 +132,7 @@ Ensure you have the following installed:
     - Click on the **Load unpacked** button.
     - Select the folder containing your extension files.
 
-### Final Steps
+#### Final Steps
 
 Now ensure the extension is active; you will see a popup button over each image on your current website. Just click on the "Detect Deepfake" button, and you can see the results!
 
