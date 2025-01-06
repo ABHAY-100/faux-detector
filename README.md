@@ -154,6 +154,11 @@ Now ensure the extension is active; you will see a popup button over each image 
 
 <br />
 
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+<br />
+
 
 ## Contribution
 
