@@ -21,11 +21,9 @@
     ],
     "permissions": [
         "activeTab",
-        "tabs",
-        "http://",
-        "https://"  
+        "tabs"
     ],
     "host_permissions": [
-        "https://22c4-49-37-227-89.ngrok-free.app/*"
+        "https://4b25-49-37-227-89.ngrok-free.app/*"
     ]
 }

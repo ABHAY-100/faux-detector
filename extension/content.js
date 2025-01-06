@@ -91,7 +91,7 @@ function addDetectButton(image) {
             }));
     
             // Send the POST request to the server
-            const response = await fetch('https://22c4-49-37-227-89.ngrok-free.app/classify', {
+            const response = await fetch('https://4b25-49-37-227-89.ngrok-free.app/classify', {
                 method: 'POST',
                 body: formData,
             });
