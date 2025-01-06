@@ -21,6 +21,7 @@ CORS(
 
 # Paths to model
 MODEL_PATH = "cnn_model.h5"
+# Ensure cnn_model.h5 is present in the backend dir else install from the link below
 # https://www.dropbox.com/scl/fi/0zh88gmiw79j6wozdzhxe/cnn_model.h5?rlkey=oh0g202fnkssq0r1imlz0u4s3&st=aahgdn49&dl=0
 
 # Load the trained model
