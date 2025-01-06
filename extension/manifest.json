@@ -5,23 +5,27 @@
     "action": {
         "default_popup": "index.html",
         "default_icon": "icon.png"
-        
     },
     "background": {
         "service_worker": "background.js"
     },
-    
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],  
-            "js": ["content.js"]
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ]
         }
     ],
     "permissions": [
-    "activeTab",
-    "tabs"
-  ],
-  "host_permissions": [
-    "https://snvdv9b8-8000.inc1.devtunnels.ms/*"
-  ]
+        "activeTab",
+        "tabs",
+        "http://",
+        "https://"  
+    ],
+    "host_permissions": [
+        "https://22c4-49-37-227-89.ngrok-free.app/*"
+    ]
 }
