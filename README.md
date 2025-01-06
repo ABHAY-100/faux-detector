@@ -157,7 +157,7 @@ Now ensure the extension is active; you will see a popup button over each image 
 
 ## Contribution
 
-At this time, we are not accepting external contributions. We appreciate your interest in Faux Detector! Please feel free to use the project, provide feedback, and report any issues you encounter.
+At this time, we are not accepting external contributions. We appreciate your interest in Faux! Please feel free to use the project, provide feedback, and report any issues you encounter.
 
 
 <br />
