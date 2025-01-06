@@ -54,9 +54,7 @@ Ensure you have the following installed:
     cd faux-detector/backend
     ```
 
-3. **Download the `.h5` file**
-
-    Download the `.h5` file from [Dropbox](https://www.dropbox.com/scl/fi/0zh88gmiw79j6wozdzhxe/cnn_model.h5?rlkey=oh0g202fnkssq0r1imlz0u4s3&st=aahgdn49&dl=0) and put it in `backend folder`
+3. **Download the `.h5` file from [Dropbox](https://www.dropbox.com/scl/fi/0zh88gmiw79j6wozdzhxe/cnn_model.h5?rlkey=oh0g202fnkssq0r1imlz0u4s3&st=aahgdn49&dl=0) and put it in `backend folder`**:
 
 4. **Set Up a Virtual Environment**:
 
