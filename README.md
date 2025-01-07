@@ -1,173 +1,148 @@
-# Faux Detector
+# 🔍 Faux Detector
 
-## Overview
+## What is Faux Detector?
 
-Faux Detector is a user-friendly Chrome Extension designed to address the increasing threat of deepfakes and manipulated images online. By providing real-time detection capabilities, Faux Detector empowers users to verify the authenticity of images while browsing the web. Utilizing advanced AI technology, it makes navigating the digital landscape safer and more trustworthy, ensuring that users can make informed decisions about the content they encounter.
+Faux Detector is your friendly Chrome extension that helps you spot fake images and videos while browsing the web. Think of it as your personal digital detective, working in real-time to help you identify what's real and what's not. In a world where deepfakes are becoming increasingly sophisticated, we're here to help you browse the internet with confidence! 
 
-<br />
+## 🎯 Why We Built This
 
+We're living in an age where seeing isn't always believing. Deepfakes and manipulated media can:
+- Spread false information
+- Impersonate people
+- Create confusion
+- Enable various types of scams
 
-## The Problem we Solve
+That's where Faux Detector comes in! We've created a simple tool that sits right in your browser, ready to analyze any suspicious content you come across. No technical expertise required - just point, click, and know!
 
-Deepfakes present a significant challenge in our digital lives, as they can impersonate individuals and spread misinformation. These manipulated images can damage reputations, facilitate scams, and create confusion in public discourse. Faux Detector tackles these issues by equipping users with the tools needed to identify manipulated content quickly and easily. By empowering individuals to spot fakes, Faux Detector helps foster a safer online environment where trust in digital media can be restored.
+## ✨ What Can It Do?
 
-<br />
+### Image Analysis
+- Instant detection of manipulated images
+- Works on any website you visit
+- Simple one-click analysis
+- Clear results showing if an image has been altered
 
+### Video Analysis
+- Real-time detection of deepfake videos
+- Frame-by-frame analysis for accuracy
+- Works with most common video formats
+- Quick results to help you make informed decisions
 
-## Features
+### Cool Features
+- 🚀 Real-time detection - no waiting around
+- 🧠 Smart AI that keeps learning about new deepfake techniques
+- 🎨 Super simple interface - just click and go!
+- 📊 Clear results that anyone can understand
 
-- **Real-Time Detection**: Identify manipulated videos and images instantly.
-- **AI-Powered Analysis**: Advanced algorithms that adapt to evolving deepfake technologies.
-- **User-Friendly Interface**: Simple and intuitive design for seamless user experience.
-
-<br />
-
-
-## Built With
+## 🛠️ Built With
 
 ![Tech Stack](https://skillicons.dev/icons?i=html,css,js,flask,tensorflow,opencv)
 
-<br />
+## 🚀 Getting Started
 
-## How to Set It Up 
+### Before You Begin
 
-### Prerequisites
+Make sure you have:
+- Python 3.10 (we've tested it thoroughly with this version)
+- The latest version of pip
+- Ngrok (for sharing your local server with the world)
 
-Ensure you have the following installed:
-- Python (use v3.10, idk abt other versions)
-- pip (try updating to the latest)
-- Ngrok (we use it for exposing your local server to the internet)
+### Step-by-Step Setup
 
-### Installation
+#### Setting Up the Backend
 
-#### Backend Setup
+1. **Get the Code**
+   ```bash
+   git clone https://github.com/ABHAY-100/faux-detector.git
+   cd faux-detector/backend
+   ```
 
-1. **Clone the Repository**:
+2. **Grab the Model File**
+   - Download our trained model from [Dropbox](https://www.dropbox.com/scl/fi/0zh88gmiw79j6wozdzhxe/cnn_model.h5?rlkey=oh0g202fnkssq0r1imlz0u4s3&st=aahgdn49&dl=0)
+   - Pop it into your `backend` folder
 
-    ```bash
-    git clone https://github.com/ABHAY-100/faux-detector.git
-    ```
+3. **Create Your Virtual Environment**
+   ```bash
+   python -m venv venv
+   
+   # On Windows
+   venv\Scripts\activate
+   
+   # On Mac/Linux
+   source venv/bin/activate
+   ```
 
-2. **Navigate to the Backend Directory**:
+4. **Install the Good Stuff**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-    ```bash
-    cd faux-detector/backend
-    ```
+5. **Fire It Up**
+   ```bash
+   python app.py
+   ```
+   Your backend will be hanging out on port 8000!
 
-3. **Download the `.h5` file from [Dropbox](https://www.dropbox.com/scl/fi/0zh88gmiw79j6wozdzhxe/cnn_model.h5?rlkey=oh0g202fnkssq0r1imlz0u4s3&st=aahgdn49&dl=0) and put it in `backend folder`**:
+#### Setting Up Ngrok
 
-4. **Set Up a Virtual Environment**:
+1. Grab Ngrok from [their website](https://ngrok.com/download) if you haven't already
 
-    ```bash
-    python -m venv venv
+2. **Share Your Backend**
+   ```bash
+   ngrok http 8000
+   ```
+   You'll get a fancy HTTPS URL like `https://something.ngrok-free.app`
 
-    venv\Scripts\activate  # For Windows
-    source venv/bin/activate  # For Linux/Mac
-    ```
+#### Adding the Chrome Extension
 
-5. **Install Dependencies**:
+1. **Update Your Settings**
+   - Open `manifest.json`
+   - Add your Ngrok URL:
+     ```json
+     "host_permissions": [
+       "https://<your-ngrok-url>.ngrok-free.app/*"
+     ]
+     ```
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+2. **Update the Code**
+   - Find `content.js`
+   - Update the API URL:
+     ```javascript
+     const response = await fetch('https://<your-ngrok-url>.ngrok-free.app/classify', {
+       method: 'POST',
+       body: formData,
+     });
+     ```
 
-6. **Run the Flask Application**:
+3. **Install in Chrome**
+   - Go to `chrome://extensions/`
+   - Turn on Developer mode
+   - Click "Load unpacked"
+   - Pick your extension folder
 
-    ```bash
-    python app.py
-    ```
+And you're ready to go! Look for the "Detect Deepfake" button on images and videos while browsing. 
 
-    *Note: Now your Flask backend will now be running on port `8000`*
-
-#### Expose Your Backend with Ngrok
-
-1. **Install Ngrok**:
-
-    If you haven't already installed Ngrok, download it from [Ngrok's official website](https://ngrok.com/download) and set it up.
-
-2. **Start Ngrok**:
-
-    Open a new command prompt or terminal window and run the following command:
-
-      ```bash
-      ngrok http 8000
-      ```
-
-3. **Get Your Ngrok HTTPS URL**:
-
-    After running the command, Ngrok will provide you with a public HTTPS URL that looks something like this: `https://6eba-49-37-227-89.ngrok-free.app`
-
-
-#### Chrome Extension Setup
-
-1. **Prepare Your Extension Folder**:
-
-    Ensure your Chrome extension files are ready in a folder containing `manifest.json`, JavaScript files, and any other necessary resources.
-
-2. **Update `manifest.json`**:
-
-    Open your `manifest.json` file and update the `host_permissions` to include your Ngrok URL:
-
-      ```bash
-      "host_permissions": [
-        "https://<your-ngrok-subdomain>.ngrok-free.app/*"
-      ]
-      ```
-    *Make sure to replace `<your-ngrok-subdomain>` with the actual subdomain provided by Ngrok when you start it.*
-
-3. **Update `content.js`**:
-
-    Modify your `content.js` file to point to your Ngrok URL for API requests:
-
-    ```bash
-    // Send the POST request to the server
-    const response = await fetch('https://<your-ngrok-subdomain>.ngrok-free.app/classify', {
-    method: 'POST',
-    body: formData,
-    });
-    ```
-
-4. **Open Chrome Extensions Page**:
-
-    Open Google Chrome and navigate to `chrome://extensions/`.
-
-5. **Enable Developer Mode**:
-
-    In the top right corner of the extensions page, toggle the **Developer mode** switch to **ON**.
-
-6. **Load Unpacked Extension**:
-
-    - Click on the **Load unpacked** button.
-    - Select the folder containing your extension files.
-
-### Final Steps
-
-Now ensure the extension is active; you will see a popup button over each image on your current website. Just click on the "Detect Deepfake" button, and you can see the results!
-
-<br />
-
-
-## Team Members
+## 👥 The Amazing Team Behind This
 
 1. [Abhay Balakrishnan](https://github.com/ABHAY-100)
 2. [Aadithya Madhav](https://github.com/aadithyayy)
 3. [Asil Mehaboob](https://github.com/AsilMehaboob)
 4. [Sreyas B Anand](https://github.com/sreyas-b-anand)
 
-<br />
+## 📜 License
 
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is protected under the MIT License. Check out the [LICENSE](LICENSE) file for all the legal details.
 
-<br />
+## 🤝 Want to Help?
 
+While we're not accepting contributions right now, we'd love to hear your thoughts! Feel free to:
+- Try out Faux Detector
+- Let us know what you think
+- Report any bugs you find
+- Star our repository if you like what we're doing!
 
-## Contribution
+## 🎉 Thank You!
 
-At this time, we are not accepting external contributions. We appreciate your interest in Faux! Please feel free to use the project, provide feedback, and report any issues you encounter.
+Thanks for checking out Faux Detector! Together, we can make the internet a more trustworthy place. If you have any questions or run into issues, don't hesitate to reach out!
 
-
-<br />
-
-
-**Thank you for your interest in Faux! 🤝**
+**Stay real, stay safe! 🌟**
