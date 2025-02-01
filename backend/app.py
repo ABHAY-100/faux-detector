@@ -1,10 +1,18 @@
+import os
+import io
+import requests
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
-import os
+from tqdm import tqdm
+import tempfile
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -19,18 +27,52 @@ CORS(
     },
 )
 
-# Paths to model
-MODEL_PATH = "cnn_model.h5"
-# Ensure cnn_model.h5 is present in the backend dir else install from the link below
-# https://www.dropbox.com/scl/fi/0zh88gmiw79j6wozdzhxe/cnn_model.h5?rlkey=oh0g202fnkssq0r1imlz0u4s3&st=aahgdn49&dl=0
+# S3 configuration
+MODEL_URL = os.getenv('MODEL_URL')
 
-# Load the trained model
-try:
-    model = load_model(MODEL_PATH)
-    print("Model loaded successfully.")
-except Exception as e:
-    raise RuntimeError(f"Error loading model: {e}")
+# Function to load model from public S3
+def load_model_from_public_s3():
+    try:
+        print("\n🔄 Downloading model from S3...")
+        response = requests.get(MODEL_URL, stream=True)
+        response.raise_for_status()
+        
+        # Get file size for progress bar
+        total_size = int(response.headers.get('content-length', 0))
+        
+        # Save the model temporarily with progress bar
+        temp_model_path = 'temp_model.h5'
+        progress_bar = tqdm(total=total_size, unit='iB', unit_scale=True)
+        
+        with open(temp_model_path, 'wb') as f:
+            for data in response.iter_content(chunk_size=1024):
+                size = f.write(data)
+                progress_bar.update(size)
+        progress_bar.close()
+        
+        print("✅ Download complete! Loading model...")
+        
+        # Load the model
+        model = load_model(temp_model_path)
+        
+        # Remove the temporary file
+        os.remove(temp_model_path)
+        
+        print("✨ Model loaded successfully!\n")
+        return model
+    except Exception as e:
+        print(f"❌ Error loading model from S3: {e}")
+        # Fallback to local model if available
+        local_model_path = 'models/cnn_model.h5'
+        if os.path.exists(local_model_path):
+            print("📂 Loading local model as fallback...")
+            model = load_model(local_model_path)
+            print("✅ Local model loaded successfully!\n")
+            return model
+        raise RuntimeError(f"Failed to load model: {e}")
 
+# Load the model
+model = load_model_from_public_s3()
 
 # Function to preprocess a frame or image
 def preprocess_frame(frame):
@@ -41,16 +83,12 @@ def preprocess_frame(frame):
     except Exception as e:
         raise ValueError(f"Error preprocessing frame: {e}")
 
-
 # Analyze predictions
 def analyze_predictions(predictions):
-    predictions_np = np.array(
-        predictions, dtype=np.float64
-    )  # Ensure float64 for JSON compatibility
-    best_prediction = float(max(predictions_np))  # Convert to native float
+    predictions_np = np.array(predictions, dtype=np.float64)
+    best_prediction = float(max(predictions_np))
     classification = "Real" if best_prediction < 0.5 else "Fake"
     return predictions_np, best_prediction, classification
-
 
 # Process video and classify frames
 def classify_video(video_path, model, num_frames=20):
@@ -70,9 +108,7 @@ def classify_video(video_path, model, num_frames=20):
         if frame_idx % frame_interval == 0:
             try:
                 preprocessed_frame = preprocess_frame(frame)
-                prediction = float(
-                    model.predict(preprocessed_frame, verbose=0)[0][0]
-                )  # Convert to native float
+                prediction = float(model.predict(preprocessed_frame, verbose=0)[0][0])
                 predictions.append(prediction)
             except Exception as e:
                 print(f"Error predicting frame at index {frame_idx}: {e}")
@@ -81,21 +117,17 @@ def classify_video(video_path, model, num_frames=20):
     cap.release()
     return predictions
 
-
 # Process photo and classify
 def classify_photo(photo_path, model):
     try:
-        frame = cv2.imread(photo_path)  # Correctly assign the read image to 'frame'
+        frame = cv2.imread(photo_path)
         if frame is None:
             raise FileNotFoundError(f"Unable to read image: {photo_path}")
         preprocessed_frame = preprocess_frame(frame)
-        prediction = float(
-            model.predict(preprocessed_frame, verbose=0)[0][0]
-        )  # Convert to native float
+        prediction = float(model.predict(preprocessed_frame, verbose=0)[0][0])
         return [prediction]
     except Exception as e:
         raise RuntimeError(f"Error processing image: {e}")
-
 
 @app.route("/classify", methods=["POST"])
 def classify():
@@ -103,38 +135,43 @@ def classify():
     if not file:
         return jsonify({"error": "No file uploaded"}), 400
 
-    file_path = f"temp_{file.filename}"
-    file.save(file_path)
-
     try:
+        # Create temp directory if it doesn't exist
+        temp_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temp')
+        os.makedirs(temp_dir, exist_ok=True)
+        
+        # Save file temporarily using a secure filename
+        temp_file_path = os.path.join(temp_dir, file.filename)
+        file.save(temp_file_path)
+        print(f"File saved temporarily at: {temp_file_path}")
+
         if file.filename.lower().endswith((".mp4", ".avi", ".mov")):
-            predictions = classify_video(file_path, model)
+            predictions = classify_video(temp_file_path, model)
         elif file.filename.lower().endswith((".jpg", ".jpeg", ".png")):
-            predictions = classify_photo(file_path, model)
+            predictions = classify_photo(temp_file_path, model)
         else:
             return jsonify({"error": "Unsupported file format"}), 400
 
-        predictions_np, best_prediction, classification = analyze_predictions(
-            predictions
-        )
+        predictions_np, best_prediction, classification = analyze_predictions(predictions)
 
-        return jsonify(
-            {
-                "predictions": predictions_np.tolist(),  # Convert NumPy array to list
-                "best_prediction": best_prediction,
-                "classification": classification,
-            }
-        )
+        return jsonify({
+            "predictions": predictions_np.tolist(),
+            "best_prediction": best_prediction,
+            "classification": classification,
+        })
     except Exception as e:
+        print(f"Error processing file: {str(e)}")
         return jsonify({"error": str(e)}), 500
     finally:
-        if os.path.exists(file_path):
-            os.remove(file_path)
+        # Clean up: delete the temporary file and directory
+        try:
+            if os.path.exists(temp_file_path):
+                os.remove(temp_file_path)
+            if os.path.exists(temp_dir) and not os.listdir(temp_dir):
+                os.rmdir(temp_dir)
+        except Exception as e:
+            print(f"Error cleaning up temporary files: {str(e)}")
 
 if __name__ == "__main__":
-    app.run(
-        host="0.0.0.0",
-        port=8000,
-    )
-    
-    
+    app.run(host="0.0.0.0", port=8000)
+
