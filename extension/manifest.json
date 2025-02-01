@@ -24,6 +24,6 @@
         "tabs"
     ],
     "host_permissions": [
-        "https://6eba-49-37-227-89.ngrok-free.app/*"
+        "http://127.0.0.1:8000/*"
     ]
 }
