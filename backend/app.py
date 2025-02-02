@@ -1,7 +1,6 @@
 import os
 from functools import lru_cache
 import requests
-from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import cv2
@@ -10,13 +9,11 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
 from tqdm import tqdm
 
-load_dotenv()
-
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*", "methods": ["POST"]}})
 
 # Configuration
-MODEL_URL = os.getenv('MODEL_URL')
+MODEL_URL = 'https://faux-cnn-model.s3.eu-north-1.amazonaws.com/cnn_model.h5'
 ALLOWED_EXTENSIONS = {'.mp4', '.avi', '.mov', '.jpg', '.jpeg', '.png'}
 INPUT_SIZE = (128, 128)
 
