@@ -45,7 +45,6 @@ That's where Faux Detector comes in! We've created a simple tool that sits right
 Make sure you have:
 - Python 3.10 (we've tested it thoroughly with this version)
 - The latest version of pip
-- Ngrok (for sharing your local server with the world)
 
 ### Step-by-Step Setup
 
@@ -57,11 +56,7 @@ Make sure you have:
    cd faux-detector/backend
    ```
 
-2. **Grab the Model File**
-   - Download our trained model from [Dropbox](https://www.dropbox.com/scl/fi/0zh88gmiw79j6wozdzhxe/cnn_model.h5?rlkey=oh0g202fnkssq0r1imlz0u4s3&st=aahgdn49&dl=0)
-   - Pop it into your `backend` folder
-
-3. **Create Your Virtual Environment**
+2. **Create Your Virtual Environment**
    ```bash
    python -m venv venv
    
@@ -72,49 +67,21 @@ Make sure you have:
    source venv/bin/activate
    ```
 
-4. **Install the Good Stuff**
+3. **Install the Good Stuff**
    ```bash
    pip install -r requirements.txt
    ```
 
-5. **Fire It Up**
+4. **Fire It Up**
    ```bash
    python app.py
    ```
    Your backend will be hanging out on port 8000!
-
-#### Setting Up Ngrok
-
-1. Grab Ngrok from [their website](https://ngrok.com/download) if you haven't already
-
-2. **Share Your Backend**
-   ```bash
-   ngrok http 8000
-   ```
-   You'll get a fancy HTTPS URL like `https://something.ngrok-free.app`
+   
 
 #### Adding the Chrome Extension
 
-1. **Update Your Settings**
-   - Open `manifest.json`
-   - Add your Ngrok URL:
-     ```json
-     "host_permissions": [
-       "https://<your-ngrok-url>.ngrok-free.app/*"
-     ]
-     ```
-
-2. **Update the Code**
-   - Find `content.js`
-   - Update the API URL:
-     ```javascript
-     const response = await fetch('https://<your-ngrok-url>.ngrok-free.app/classify', {
-       method: 'POST',
-       body: formData,
-     });
-     ```
-
-3. **Install in Chrome**
+1. **Install in Chrome**
    - Go to `chrome://extensions/`
    - Turn on Developer mode
    - Click "Load unpacked"
