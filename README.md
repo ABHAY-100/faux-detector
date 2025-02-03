@@ -100,13 +100,9 @@ And you're ready to go! Look for the "Detect Deepfake" button on images and vide
 
 This project is protected under the MIT License. Check out the [LICENSE](LICENSE) file for all the legal details.
 
-## 🤝 Want to Help?
+## 🤝 Wanna Contribute?
 
-While we're not accepting contributions right now, we'd love to hear your thoughts! Feel free to:
-- Try out Faux Detector
-- Let us know what you think
-- Report any bugs you find
-- Star our repository if you like what we're doing!
+Fork this repo, make some changes, and send a pull request. We'd love to see what you come up with!
 
 ## 🎉 Thank You!
 
