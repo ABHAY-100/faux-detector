@@ -1,0 +1,6 @@
+streamlit
+tensorflow
+opencv-python-headless
+Pillow
+tqdm
+requests
